@@ -28,7 +28,7 @@ namespace Torann.CustomDeathRandomness
             {
                 switch (instruction.operand)
                 {
-                    case MethodInfo mInfo when mInfo == typeof(RaceProperties).GetMethod("get_IsMechanoid"):
+                    case MethodInfo mInfo when mInfo == typeof(RaceProperties).GetMethod("get_Animal"):
                         animalReplace = true;
                         break;
                     case FieldInfo fInfo when fInfo ==
