@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using Verse;
 #if V10
 using Harmony;
+
 #else
 using HarmonyLib;
 #endif
@@ -31,7 +32,8 @@ namespace Torann.CustomDeathRandomness
                         animalReplace = true;
                         break;
                     case FieldInfo fInfo when fInfo ==
-                                              typeof(HealthTuning).GetField("DeathOnDownedChance_NonColonyHumanlikeFromPopulationIntentCurve"):
+                                              typeof(HealthTuning).GetField(
+                                                  "DeathOnDownedChance_NonColonyHumanlikeFromPopulationIntentCurve"):
                         pawnReplace = true;
                         break;
                 }

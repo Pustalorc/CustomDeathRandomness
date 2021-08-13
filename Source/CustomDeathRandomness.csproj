@@ -125,8 +125,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomDeathRandomnessMod.cs" />
-    <Compile Include="CDRSettings.cs" />
-    <Compile Include="Main.cs" />
+    <Compile Include="CustomDeathRandomnessSettings.cs" />
+    <Compile Include="PawnHealthTrackerPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

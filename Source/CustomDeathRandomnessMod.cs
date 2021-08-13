@@ -4,6 +4,7 @@ using UnityEngine;
 using Verse;
 #if V10
 using Harmony;
+
 #else
 using HarmonyLib;
 #endif
@@ -43,17 +44,20 @@ namespace Torann.CustomDeathRandomness
 
             listingStandard.Gap();
 
-            listingStandard.CheckboxLabeled("CDR_UseStorytellerModifier".Translate(), ref Settings.UseStorytellerPopulationIntent, "CDR_UseStorytellerModifierTooltip".Translate());
+            listingStandard.CheckboxLabeled("CDR_UseStorytellerModifier".Translate(),
+                ref Settings.UseStorytellerPopulationIntent, "CDR_UseStorytellerModifierTooltip".Translate());
 
             listingStandard.Label("CDR_AnimalDeathRate".Translate(Settings.AnimalDeathChance));
             GUI.contentColor = Color.yellow;
-            Settings.AnimalDeathChance = Widgets.HorizontalSlider(listingStandard.GetRect(20f), Settings.AnimalDeathChance, 0, 100, false, $"{Settings.AnimalDeathChance}%", "0%", "100%", 1f);
+            Settings.AnimalDeathChance = Widgets.HorizontalSlider(listingStandard.GetRect(20f),
+                Settings.AnimalDeathChance, 0, 100, false, $"{Settings.AnimalDeathChance}%", "0%", "100%", 1f);
             listingStandard.Gap();
 
             GUI.contentColor = Color.white;
             listingStandard.Label("CDR_PawnDeathRate".Translate(Settings.PawnDeathChance));
             GUI.contentColor = Color.yellow;
-            Settings.PawnDeathChance = Widgets.HorizontalSlider(listingStandard.GetRect(20f), Settings.PawnDeathChance, 0, 100, false, $"{Settings.PawnDeathChance}%", "0%", "100%", 1f);
+            Settings.PawnDeathChance = Widgets.HorizontalSlider(listingStandard.GetRect(20f), Settings.PawnDeathChance,
+                0, 100, false, $"{Settings.PawnDeathChance}%", "0%", "100%", 1f);
             listingStandard.Gap();
 
             listingStandard.ColumnWidth = canvas.width / 4f;
