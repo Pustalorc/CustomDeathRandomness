@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Manifest>
 	<identifier>CustomDeathRandomness</identifier>
-	<version>1.2.0</version>
+	<version>1.2.2</version>
 	<manifestUri>https://raw.githubusercontent.com/Torann/CustomDeathRandomness/master/About/Manifest.xml</manifestUri>
 	<downloadUri>https://github.com/Torann/CustomDeathRandomness/releases/latest</downloadUri>
 </Manifest>
