@@ -1,12 +1,11 @@
-﻿using System.Reflection;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 using Verse;
 #if V10
 using Harmony;
-
 #else
 using HarmonyLib;
+
 #endif
 
 namespace Torann.CustomDeathRandomness
@@ -33,7 +32,8 @@ namespace Torann.CustomDeathRandomness
 #else
             HarmonyInstance = new Harmony("CustomDeathRandomness.Torann");
 #endif
-            HarmonyInstance.PatchAll(Assembly.GetCallingAssembly());
+            HarmonyInstance.Patch(AccessTools.Method(typeof(Pawn_HealthTracker), "CheckForStateChange"),
+                transpiler: new HarmonyMethod(typeof(PawnHealthTrackerPatch), "Transpiler"));
         }
 
         public override void DoSettingsWindowContents(Rect canvas)

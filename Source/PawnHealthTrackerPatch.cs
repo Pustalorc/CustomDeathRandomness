@@ -5,22 +5,38 @@ using JetBrains.Annotations;
 using Verse;
 #if V10
 using Harmony;
-
 #else
 using HarmonyLib;
+
 #endif
 
 namespace Torann.CustomDeathRandomness
 {
     [HarmonyPatch(typeof(Pawn_HealthTracker), "CheckForStateChange")]
     [UsedImplicitly]
-    internal static class PawnHealthTrackerPatch
+    public static class PawnHealthTrackerPatch
     {
+        [UsedImplicitly]
+        public static float GetAnimalDeathChance()
+        {
+            return CustomDeathRandomnessMod.Instance.Settings.AnimalDeathChance;
+        }
+
+        [UsedImplicitly]
+        public static float GetPawnDeathChance(float popIntent)
+        {
+            var settings = CustomDeathRandomnessMod.Instance.Settings;
+
+            if (!settings.UseStorytellerPopulationIntent)
+                popIntent = 1f;
+
+            return popIntent * settings.PawnDeathChance;
+        }
+
         [HarmonyTranspiler]
         [UsedImplicitly]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            var settings = CustomDeathRandomnessMod.Instance.Settings;
             var animalReplace = false;
             var pawnReplace = false;
             var instructionsList = new List<CodeInstruction>(instructions);
@@ -40,31 +56,21 @@ namespace Torann.CustomDeathRandomness
 
                 if (animalReplace && instruction.opcode == OpCodes.Ldc_R4)
                 {
-                    Log.Message($"Transpiled CheckForStateChange and replacing the old parameter of Ldc_R4 to {settings.AnimalDeathChance}");
-                    yield return new CodeInstruction(OpCodes.Ldc_R4, settings.AnimalDeathChance);
+                    yield return new CodeInstruction(OpCodes.Call,
+                        typeof(PawnHealthTrackerPatch).GetMethod("GetAnimalDeathChance"));
 
                     animalReplace = false;
                 }
                 else if (pawnReplace)
                 {
-                    var isMul = instruction.opcode != OpCodes.Mul;
-                    var value = settings.PawnDeathChance;
+                    var isMul = instruction.opcode == OpCodes.Mul;
+                    yield return instruction;
 
                     if (!isMul)
-                    {
-                        if (settings.UseStorytellerPopulationIntent)
-                            yield return instruction;
-
                         continue;
-                    }
 
-                    if (settings.UseStorytellerPopulationIntent)
-                        yield return instruction;
-
-                    yield return new CodeInstruction(OpCodes.Ldc_R4, value);
-
-                    if (settings.UseStorytellerPopulationIntent)
-                        yield return new CodeInstruction(OpCodes.Mul);
+                    yield return new CodeInstruction(OpCodes.Call,
+                        typeof(PawnHealthTrackerPatch).GetMethod("GetPawnDeathChance"));
 
                     pawnReplace = false;
                 }
