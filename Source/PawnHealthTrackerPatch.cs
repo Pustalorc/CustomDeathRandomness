@@ -40,6 +40,7 @@ namespace Torann.CustomDeathRandomness
 
                 if (animalReplace && instruction.opcode == OpCodes.Ldc_R4)
                 {
+                    Log.Message($"Transpiled CheckForStateChange and replacing the old parameter of Ldc_R4 to {settings.AnimalDeathChance}");
                     yield return new CodeInstruction(OpCodes.Ldc_R4, settings.AnimalDeathChance);
 
                     animalReplace = false;
@@ -57,10 +58,15 @@ namespace Torann.CustomDeathRandomness
                         continue;
                     }
 
+                    if (settings.UseStorytellerPopulationIntent)
+                        yield return instruction;
+
                     yield return new CodeInstruction(OpCodes.Ldc_R4, value);
 
                     if (settings.UseStorytellerPopulationIntent)
                         yield return new CodeInstruction(OpCodes.Mul);
+
+                    pawnReplace = false;
                 }
                 else
                 {
